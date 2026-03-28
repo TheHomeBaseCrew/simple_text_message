@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Text Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .message-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .message {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .message.sent {
+            background-color: #007bff;
+            color: white;
+            margin-left: 100px;
+        }
+        .message.received {
+            margin-right: 100px;
+        }
+        .timestamp {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+        .input-container {
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        #messageType {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .clock {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="clock" id="clock"></div>
+        <div class="message-container">
+            <div class="message received">
+                Hey, how are you doing today?
+                <div class="timestamp">10:30 AM</div>
+            </div>
+            <div class="message sent">
+                I'm doing great, thanks! How about you?
+                <div class="timestamp">10:32 AM</div>
+            </div>
+            <div class="message received">
+                Pretty good! Just working on some projects.
+                <div class="timestamp">10:35 AM</div>
+            </div>
+            <div class="message sent">
+                That sounds interesting. What kind of projects?
+                <div class="timestamp">10:36 AM</div>
+            </div>
+            <div class="message received">
+                I'm working on a web development project. Building a chat application actually!
+                <div class="timestamp">10:38 AM</div>
+            </div>
+            <div class="message sent">
+                That's cool! I love web development. What technologies are you using?
+                <div class="timestamp">10:39 AM</div>
+            </div>
+            <div class="message received">
+                HTML, CSS, and JavaScript. Keeping it simple for now.
+                <div class="timestamp">10:41 AM</div>
+            </div>
+            <div class="message sent">
+                Smart choice! Those are the fundamentals. Good luck with your project!
+                <div class="timestamp">10:42 AM</div>
+            </div>
+            <div class="message received">
+                Thanks! I'll let you know how it goes.
+                <div class="timestamp">10:43 AM</div>
+            </div>
+            <div class="message sent">
+                Looking forward to hearing about it!
+                <div class="timestamp">10:44 AM</div>
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type your message..." maxlength="500">
+            <select id="messageType">
+                <option value="sent">Send</option>
+                <option value="received">Receive</option>
+            </select>
+            <button onclick="addMessage()">Send</button>
+        </div>
+    </body>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            document.getElementById('clock').textContent = timeString;
+        }
+        
+        // Update clock immediately and then every second
+        updateClock();
+        setInterval(updateClock, 1000);
+        
+        function addMessage() {
+            const input = document.getElementById('messageInput');
+            const type = document.getElementById('messageType').value;
+            const messageText = input.value.trim();
+            
+            if (messageText === '') return;
+            
+            const container = document.querySelector('.message-container');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                ${messageText}
+                <div class="timestamp">${timeString}</div>
+            `;
+            
+            container.appendChild(messageDiv);
+            input.value = '';
+            
+            // Scroll to bottom
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addMessage();
+            }
+        });
+    </script>
+</html>
